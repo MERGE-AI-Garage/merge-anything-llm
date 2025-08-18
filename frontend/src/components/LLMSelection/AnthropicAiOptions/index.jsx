@@ -18,7 +18,7 @@ export default function AnthropicAiOptions({ settings }) {
             type="password"
             name="AnthropicApiKey"
             className="border-none bg-theme-settings-input-bg text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
-            placeholder="Anthropic Claude-2 API Key"
+            placeholder="Anthropic API Key"
             defaultValue={settings?.AnthropicApiKey ? "*".repeat(20) : ""}
             required={true}
             autoComplete="off"
