@@ -92,11 +92,13 @@ async function chatPrompt(workspace, user = null) {
   const basePrompt =
     workspace?.openAiPrompt ??
     "Given the following conversation, relevant context, and a follow up question, reply with an answer to the current question the user is asking. Return only your response to the question given the above information following the users instructions as needed.";
-  
+
   // Add provider-specific identity information to prevent model confusion
   const providerIdentity = getProviderIdentity(workspace?.chatProvider);
-  const fullPrompt = providerIdentity ? `${providerIdentity}\n\n${basePrompt}` : basePrompt;
-  
+  const fullPrompt = providerIdentity
+    ? `${providerIdentity}\n\n${basePrompt}`
+    : basePrompt;
+
   return await SystemPromptVariables.expandSystemPromptVariables(
     fullPrompt,
     user?.id

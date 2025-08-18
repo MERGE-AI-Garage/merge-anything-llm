@@ -252,13 +252,18 @@ const Workspace = {
       if (data.chatProvider !== undefined) {
         const currentWorkspace = await prisma.workspaces.findUnique({
           where: { id },
-          select: { chatProvider: true }
+          select: { chatProvider: true },
         });
-        
+
         // If provider is actually changing, clear chat history to prevent context confusion
-        if (currentWorkspace && currentWorkspace.chatProvider !== data.chatProvider) {
+        if (
+          currentWorkspace &&
+          currentWorkspace.chatProvider !== data.chatProvider
+        ) {
           await WorkspaceChats.delete({ workspaceId: id });
-          console.log(`Cleared chat history for workspace ${id} due to provider change from ${currentWorkspace.chatProvider} to ${data.chatProvider}`);
+          console.log(
+            `Cleared chat history for workspace ${id} due to provider change from ${currentWorkspace.chatProvider} to ${data.chatProvider}`
+          );
         }
       }
 
