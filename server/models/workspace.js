@@ -6,6 +6,7 @@ const { ROLES } = require("../utils/middleware/multiUserProtected");
 const { v4: uuidv4 } = require("uuid");
 const { User } = require("./user");
 const { PromptHistory } = require("./promptHistory");
+const { WorkspaceChats } = require("./workspaceChats");
 
 function isNullOrNaN(value) {
   if (value === null) return true;
@@ -247,6 +248,20 @@ const Workspace = {
     if (!id) throw new Error("No workspace id provided for update");
 
     try {
+      // Check if chatProvider is being changed
+      if (data.chatProvider !== undefined) {
+        const currentWorkspace = await prisma.workspaces.findUnique({
+          where: { id },
+          select: { chatProvider: true }
+        });
+        
+        // If provider is actually changing, clear chat history to prevent context confusion
+        if (currentWorkspace && currentWorkspace.chatProvider !== data.chatProvider) {
+          await WorkspaceChats.delete({ workspaceId: id });
+          console.log(`Cleared chat history for workspace ${id} due to provider change from ${currentWorkspace.chatProvider} to ${data.chatProvider}`);
+        }
+      }
+
       const workspace = await prisma.workspaces.update({
         where: { id },
         data,

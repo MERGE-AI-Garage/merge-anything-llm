@@ -108,42 +108,10 @@ async function chatPrompt(workspace, user = null) {
  * @param {string|null} provider - the chat provider being used
  * @returns {string|null} - the provider identity text or null for generic providers
  */
-function getProviderIdentity(provider) {
-  switch (provider) {
-    case "anthropic":
-      return "You are Claude, an AI assistant created by Anthropic.";
-    case "groq":
-      return "You are a helpful AI assistant powered by Groq's fast inference technology.";
-    case "openai":
-      return "You are ChatGPT, a helpful AI assistant created by OpenAI.";
-    case "gemini":
-      return "You are Gemini, a helpful AI assistant created by Google.";
-    case "mistral":
-      return "You are a helpful AI assistant powered by Mistral AI.";
-    case "cohere":
-      return "You are a helpful AI assistant powered by Cohere.";
-    case "perplexity":
-      return "You are a helpful AI assistant powered by Perplexity.";
-    case "huggingface":
-      return "You are a helpful AI assistant powered by Hugging Face.";
-    case "togetherai":
-      return "You are a helpful AI assistant powered by Together AI.";
-    case "fireworksai":
-      return "You are a helpful AI assistant powered by Fireworks AI.";
-    case "openrouter":
-      return "You are a helpful AI assistant powered by OpenRouter.";
-    case "bedrock":
-      return "You are a helpful AI assistant powered by Amazon Bedrock.";
-    case "azure":
-      return "You are a helpful AI assistant powered by Azure OpenAI.";
-    case "deepseek":
-      return "You are a helpful AI assistant powered by DeepSeek.";
-    case "xai":
-      return "You are Grok, a helpful AI assistant created by xAI.";
-    default:
-      // For local providers or unknown providers, don't add specific identity
-      return null;
-  }
+function getProviderIdentity(_provider) {
+  // Removed hardcoded identities - let the AI model respond naturally
+  // without forcing specific brand identities
+  return null;
 }
 
 // We use this util function to deduplicate sources from similarity searching
