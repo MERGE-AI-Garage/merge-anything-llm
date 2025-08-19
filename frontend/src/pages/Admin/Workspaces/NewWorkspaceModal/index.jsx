@@ -24,27 +24,25 @@ export default function NewWorkspaceModal({ closeModal }) {
     e.preventDefault();
     const form = new FormData(e.target);
     const { workspace, error } = await Admin.newWorkspace(form.get("name"));
-    
+
     if (!!workspace && selectedUsers.length > 0) {
       // Add selected users to the newly created workspace
-      const { success, error: updateError } = await Admin.updateUsersInWorkspace(
-        workspace.id,
-        selectedUsers
-      );
+      const { success, error: updateError } =
+        await Admin.updateUsersInWorkspace(workspace.id, selectedUsers);
       if (!success) {
         setError(updateError || "Failed to add users to workspace");
         return;
       }
     }
-    
+
     if (!!workspace) window.location.reload();
     setError(error);
   };
 
   const toggleUserSelection = (userId) => {
-    setSelectedUsers(prev => 
-      prev.includes(userId) 
-        ? prev.filter(id => id !== userId)
+    setSelectedUsers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
         : [...prev, userId]
     );
   };
@@ -130,15 +128,17 @@ export default function NewWorkspaceModal({ closeModal }) {
                 </div>
                 {selectedUsers.length > 0 && (
                   <p className="mt-2 text-white text-opacity-60 text-xs">
-                    {selectedUsers.length} user{selectedUsers.length !== 1 ? 's' : ''} selected
+                    {selectedUsers.length} user
+                    {selectedUsers.length !== 1 ? "s" : ""} selected
                   </p>
                 )}
               </div>
 
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
               <p className="text-white text-opacity-60 text-xs md:text-sm">
-                After creating this workspace, selected users will have access to it immediately. 
-                You can manage users later from the workspace settings.
+                After creating this workspace, selected users will have access
+                to it immediately. You can manage users later from the workspace
+                settings.
               </p>
             </div>
             <div className="flex justify-between items-center mt-6 pt-6 border-t border-theme-modal-border">

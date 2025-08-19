@@ -14,7 +14,7 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
     async function fetchWorkspaceUsers() {
       try {
         const workspaceUsers = await Admin.workspaceUsers(workspace.id);
-        const workspaceUserIds = workspaceUsers.map(user => user.userId);
+        const workspaceUserIds = workspaceUsers.map((user) => user.userId);
         setCurrentWorkspaceUsers(workspaceUsers);
         setSelectedUsers(workspaceUserIds);
         setLoading(false);
@@ -29,13 +29,13 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
   const handleSave = async () => {
     setSaving(true);
     setError(null);
-    
+
     try {
       const { success, error } = await Admin.updateUsersInWorkspace(
         workspace.id,
         selectedUsers
       );
-      
+
       if (success) {
         setSuccess(true);
         setTimeout(() => {
@@ -47,33 +47,33 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
     } catch (err) {
       setError("An error occurred while updating users");
     }
-    
+
     setSaving(false);
   };
 
   const toggleUserSelection = (userId) => {
-    setSelectedUsers(prev => 
-      prev.includes(userId) 
-        ? prev.filter(id => id !== userId)
+    setSelectedUsers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
         : [...prev, userId]
     );
   };
 
   const getCurrentlySelectedCount = () => {
-    return selectedUsers.filter(userId => 
-      currentWorkspaceUsers.some(wu => wu.userId === userId)
+    return selectedUsers.filter((userId) =>
+      currentWorkspaceUsers.some((wu) => wu.userId === userId)
     ).length;
   };
 
   const getNewlySelectedCount = () => {
-    return selectedUsers.filter(userId => 
-      !currentWorkspaceUsers.some(wu => wu.userId === userId)
+    return selectedUsers.filter(
+      (userId) => !currentWorkspaceUsers.some((wu) => wu.userId === userId)
     ).length;
   };
 
   const getRemovedCount = () => {
-    return currentWorkspaceUsers.filter(wu => 
-      !selectedUsers.includes(wu.userId)
+    return currentWorkspaceUsers.filter(
+      (wu) => !selectedUsers.includes(wu.userId)
     ).length;
   };
 
@@ -129,16 +129,22 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
                 ) : (
                   <div className="p-2">
                     {users.map((user) => {
-                      const isCurrentlyInWorkspace = currentWorkspaceUsers.some(wu => wu.userId === user.id);
+                      const isCurrentlyInWorkspace = currentWorkspaceUsers.some(
+                        (wu) => wu.userId === user.id
+                      );
                       const isSelected = selectedUsers.includes(user.id);
-                      
+
                       return (
                         <div
                           key={user.id}
                           className={`flex items-center p-2 hover:bg-theme-bg-primary rounded cursor-pointer ${
-                            isCurrentlyInWorkspace && isSelected ? 'bg-blue-900 bg-opacity-20' : 
-                            !isCurrentlyInWorkspace && isSelected ? 'bg-green-900 bg-opacity-20' :
-                            isCurrentlyInWorkspace && !isSelected ? 'bg-red-900 bg-opacity-20' : ''
+                            isCurrentlyInWorkspace && isSelected
+                              ? "bg-blue-900 bg-opacity-20"
+                              : !isCurrentlyInWorkspace && isSelected
+                                ? "bg-green-900 bg-opacity-20"
+                                : isCurrentlyInWorkspace && !isSelected
+                                  ? "bg-red-900 bg-opacity-20"
+                                  : ""
                           }`}
                           onClick={() => toggleUserSelection(user.id)}
                         >
@@ -172,17 +178,25 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
             </div>
 
             <div className="text-white text-opacity-60 text-sm space-y-1">
-              <p>• Currently in workspace: {getCurrentlySelectedCount()} users</p>
+              <p>
+                • Currently in workspace: {getCurrentlySelectedCount()} users
+              </p>
               {getNewlySelectedCount() > 0 && (
-                <p className="text-green-300">• ➕ Will be added: {getNewlySelectedCount()} users</p>
+                <p className="text-green-300">
+                  • ➕ Will be added: {getNewlySelectedCount()} users
+                </p>
               )}
               {getRemovedCount() > 0 && (
-                <p className="text-red-300">• ➖ Will be removed from this workspace: {getRemovedCount()} users</p>
+                <p className="text-red-300">
+                  • ➖ Will be removed from this workspace: {getRemovedCount()}{" "}
+                  users
+                </p>
               )}
               <p>• Total after changes: {selectedUsers.length} users</p>
               {getRemovedCount() > 0 && (
                 <p className="text-yellow-300 text-xs mt-2">
-                  ⚠️ Note: Users will only be removed from this workspace, not deleted from the system
+                  ⚠️ Note: Users will only be removed from this workspace, not
+                  deleted from the system
                 </p>
               )}
             </div>
@@ -214,7 +228,7 @@ export default function ManageUsersModal({ workspace, users, closeModal }) {
                   Saved!
                 </>
               ) : (
-                'Save Changes'
+                "Save Changes"
               )}
             </button>
           </div>
